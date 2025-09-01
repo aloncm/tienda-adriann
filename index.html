@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dulce Paraíso - Tienda de Dulces Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🍭</span>
+                    <h1>Dulce Paraíso</h1>
+                </div>
+                
+                <div class="search-container" id="searchContainer">
+                    <input type="text" id="searchInput" placeholder="Buscar dulces..." class="search-input">
+                    <span class="search-icon">🔍</span>
+                </div>
+
+                <nav class="nav">
+                    <button class="nav-btn active" data-view="catalog">Catálogo</button>
+                    <button class="nav-btn" data-view="cart">
+                        Carrito
+                        <span class="cart-badge" id="cartBadge">0</span>
+                    </button>
+                    <button class="nav-btn" data-view="admin">Admin</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Catalog View -->
+        <section id="catalogView" class="view active">
+            <div class="container">
+                <div class="hero">
+                    <h2>Los Dulces Más Deliciosos</h2>
+                    <p>Descubre nuestra increíble selección de dulces artesanales</p>
+                </div>
+
+                <div class="category-filter" id="categoryFilter">
+                    <button class="category-btn active" data-category="all">Todos</button>
+                    <button class="category-btn" data-category="chocolates">Chocolates</button>
+                    <button class="category-btn" data-category="gomitas">Gomitas</button>
+                    <button class="category-btn" data-category="paletas">Paletas</button>
+                    <button class="category-btn" data-category="caramelos">Caramelos</button>
+                    <button class="category-btn" data-category="tradicionales">Tradicionales</button>
+                </div>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart View -->
+        <section id="cartView" class="view">
+            <div class="container">
+                <div class="cart-container">
+                    <div class="cart-header">
+                        <h2>🛒 Tu Carrito de Dulces</h2>
+                    </div>
+                    <div id="cartContent">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin View -->
+        <section id="adminView" class="view">
+            <div class="container">
+                <div id="adminLogin" class="admin-login">
+                    <div class="login-form">
+                        <h2>🔐 Panel de Administración</h2>
+                        <p>Ingresa tus credenciales para continuar</p>
+                        <form id="loginForm">
+                            <input type="text" id="adminUsername" placeholder="Usuario" required>
+                            <input type="password" id="adminPassword" placeholder="Contraseña" required>
+                            <button type="submit">Iniciar Sesión</button>
+                        </form>
+                        <p class="demo-info">Demo: admin / dulces123</p>
+                    </div>
+                </div>
+
+                <div id="adminPanel" class="admin-panel" style="display: none;">
+                    <div class="admin-header">
+                        <h2>📦 Panel de Administración</h2>
+                        <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+                    </div>
+
+                    <div class="admin-tabs">
+                        <button class="tab-btn active" data-tab="products">Productos</button>
+                        <button class="tab-btn" data-tab="orders">Pedidos</button>
+                    </div>
+
+                    <div id="productsTab" class="tab-content active">
+                        <div class="admin-actions">
+                            <button id="addProductBtn" class="add-btn">➕ Agregar Producto</button>
+                        </div>
+                        <div id="adminProductsList" class="admin-products">
+                            <!-- Admin products list will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div id="ordersTab" class="tab-content">
+                        <div id="ordersList" class="orders-list">
+                            <!-- Orders will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Form Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nuevo Producto</h3>
+                <button class="close-btn" id="closeModal">✕</button>
+            </div>
+            <form id="productForm" class="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre del Producto</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="productCategory" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="chocolates">Chocolates</option>
+                            <option value="gomitas">Gomitas</option>
+                            <option value="paletas">Paletas</option>
+                            <option value="caramelos">Caramelos</option>
+                            <option value="tradicionales">Tradicionales</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="productDescription" required></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Precio ($)</label>
+                        <input type="number" id="productPrice" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" id="productStock" min="0" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>URL de la Imagen</label>
+                    <input type="url" id="productImage" required>
+                    <div class="image-suggestions">
+                        <p>Imágenes sugeridas:</p>
+                        <div class="suggested-images">
+                            <img src="https://images.pexels.com/photos/918327/pexels-photo-918327.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Chocolates" class="suggested-img">
+                            <img src="https://images.pexels.com/photos/1302242/pexels-photo-1302242.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Gomitas" class="suggested-img">
+                            <img src="https://images.pexels.com/photos/1616113/pexels-photo-1616113.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Paletas" class="suggested-img">
+                            <img src="https://images.pexels.com/photos/1263617/pexels-photo-1263617.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Caramelos" class="suggested-img">
+                            <img src="https://images.pexels.com/photos/1090387/pexels-photo-1090387.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Bombones" class="suggested-img">
+                            <img src="https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Tradicionales" class="suggested-img">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productFeatured">
+                        <span class="checkmark"></span>
+                        ⭐ Producto Destacado
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancelForm" class="cancel-btn">Cancelar</button>
+                    <button type="submit" class="submit-btn">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>💳 Finalizar Compra</h3>
+                <button class="close-btn" id="closeCheckout">✕</button>
+            </div>
+            <div id="checkoutContent">
+                <!-- Checkout content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <div class="success-content">
+                <div class="success-icon">🎉</div>
+                <h3>¡Pedido Confirmado!</h3>
+                <p>Tu pedido ha sido procesado exitosamente. Recibirás un email de confirmación pronto.</p>
+                <button id="closeSuccess" class="success-btn">Continuar Comprando</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
