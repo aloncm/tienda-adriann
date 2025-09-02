@@ -6,6 +6,8 @@
     <title>Dulce Paraíso - Tienda de Dulces Online</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AU1SnJWRBCT9tNSiEepR5rZBWupkqy2wZV6TQIEQSlzIjliwWxMXANF3MJe_s_QL8CkwJTh8lubsP3EO&currency=MXN"></script>
 <body>
     <!-- Header -->
     <header class="header">
@@ -40,7 +42,7 @@
             <div class="container">
                 <div class="hero">
                     <h2>Los Dulces Más Deliciosos</h2>
-                    <p>Descubre nuestra increíble selección de dulces artesanales</p>
+                    <p>Descubre nuestra increíble selección de dulces</p>
                 </div>
 
                 <div class="category-filter" id="categoryFilter">
@@ -73,6 +75,7 @@
         </section>
 
         <!-- Admin View -->
+         
         <section id="adminView" class="view">
             <div class="container">
                 <div id="adminLogin" class="admin-login">
@@ -84,7 +87,7 @@
                             <input type="password" id="adminPassword" placeholder="Contraseña" required>
                             <button type="submit">Iniciar Sesión</button>
                         </form>
-                        <p class="demo-info">Demo: admin / dulces123</p>
+                        <p class="demo-info">Ejemplo: admin / dulces123</p>
                     </div>
                 </div>
 
@@ -193,17 +196,20 @@
     </div>
 
     <!-- Checkout Modal -->
-    <div id="checkoutModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>💳 Finalizar Compra</h3>
-                <button class="close-btn" id="closeCheckout">✕</button>
-            </div>
-            <div id="checkoutContent">
-                <!-- Checkout content will be loaded here -->
-            </div>
+   <!-- Checkout Modal -->
+<div id="checkoutModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>💳 Finalizar Compra</h3>
+            <button class="close-btn" id="closeCheckout">✕</button>
+        </div>
+        <div id="checkoutContent">
+            <!-- Aquí va el contenedor de PayPal -->
+            <div id="paypal-button-container"></div>
+            <!-- Checkout content will be loaded here -->
         </div>
     </div>
+</div>
 
     <!-- Success Modal -->
     <div id="successModal" class="modal">
@@ -211,7 +217,7 @@
             <div class="success-content">
                 <div class="success-icon">🎉</div>
                 <h3>¡Pedido Confirmado!</h3>
-                <p>Tu pedido ha sido procesado exitosamente. Recibirás un email de confirmación pronto.</p>
+                <p>Tu pedido ha sido procesado exitosamente.</p>
                 <button id="closeSuccess" class="success-btn">Continuar Comprando</button>
             </div>
         </div>

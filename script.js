@@ -632,43 +632,68 @@ function openCheckoutModal() {
                     </div>
                 </div>
             </div>
-
-            <div class="payment-methods">
-                <h4>💳 Método de Pago</h4>
-                <div class="payment-options">
-                    <label class="payment-option selected">
-                        <input type="radio" name="payment" value="card" checked>
-                        <span>💳 Tarjeta de Crédito/Débito</span>
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="payment" value="cash">
-                        <span>💵 Pago en Efectivo</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="checkout-actions">
-                <button type="button" class="cancel-btn" onclick="closeCheckoutModal()">Cancelar</button>
-                <button type="submit" class="submit-btn" id="processPaymentBtn">
-                    Confirmar Pedido ($${getCartTotal().toFixed(2)})
-                </button>
-            </div>
-        </form>
+  <div id="paypal-button-container" style="margin-top: 20px;"></div>
+        <button type="button" class="cancel-btn" onclick="closeCheckoutModal()">Cancelar</button>
+    
     `;
-
+  modal.classList.add('active');
+  
     // Setup payment option selection
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', () => {
-            document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            option.querySelector('input').checked = true;
-        });
-    });
+  
+    if (window.paypal) {
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: getCartTotal().toFixed(2)
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                // Validar que los datos del cliente estén llenos
+                const name = document.getElementById('customerName').value;
+                const email = document.getElementById('customerEmail').value;
+                const phone = document.getElementById('customerPhone').value;
+                const address = document.getElementById('customerAddress').value;
+                if (!name || !email || !phone || !address) {
+                    alert('Por favor llena todos los datos de contacto antes de pagar.');
+                    return;
+                }
+                return actions.order.capture().then(function(details) {
+                    // Procesa el pedido como pagado
+                    const order = {
+                        id: `order-${Date.now()}`,
+                        items: [...cart],
+                        total: getCartTotal(),
+                        customerInfo: {
+                            name,
+                            email,
+                            phone,
+                            address
+                        },
+                        status: 'completed',
+                        createdAt: new Date().toISOString(),
+                        paypal: details
+                    };
+                    orders.push(order);
+                    saveToLocalStorage('candy-store-orders', orders);
+                    cart = [];
+                    saveToLocalStorage('candy-store-cart', cart);
+                    updateCartBadge();
+                    closeCheckoutModal();
+                    showSuccessModal();
+                });
+            }
+        }).render('#paypal-button-container');
+    }
 
     // Setup form submission
     document.getElementById('checkoutForm').addEventListener('submit', handleCheckout);
 
-    modal.classList.add('active');
+  
+    
 }
 
 function closeCheckoutModal() {
@@ -716,6 +741,7 @@ function handleCheckout(e) {
         btn.disabled = false;
     }, 2000);
 }
+
 
 function showSuccessModal() {
     document.getElementById('successModal').classList.add('active');
