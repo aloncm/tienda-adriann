@@ -257,7 +257,7 @@ function addToCart(productId) {
     updateCartBadge();
     
     // Show feedback
-    showNotification(`${product.name} agregado al carrito`);
+    showNotification(`✅`);
 }
 
 function removeFromCart(productId) {
@@ -758,16 +758,18 @@ function showNotification(message) {
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
-        top: 100px;
-        right: 20px;
+        top: 135px; /* antes estaba en 100px, ahora más abajo */
+        right: 5px;
         background: linear-gradient(135deg, #ec4899 0%, #f97316 100%);
         color: white;
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1.2rem;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         z-index: 1001;
         animation: slideIn 0.3s ease-out;
         font-weight: 600;
+        font-size: 1rem;
+        max-width: 80vw;
     `;
     notification.textContent = message;
     
